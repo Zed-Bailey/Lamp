@@ -5,12 +5,14 @@ import sys
 import wave
 import struct
 import pvrhino
+from hardware_control import HardwareController
 
 class Microphone:
     def __init__(self, 
             accessKey,
             porcupineKeywordPath,
             rhinoContextPath,
+            hardwareController: HardwareController,
             audio_device_index = 0,
             porcupine_sensitivity=0.5,
             rhino_sensitivity=0.5,
@@ -19,6 +21,8 @@ class Microphone:
         ):
         self.thread:Thread
         
+        self.hardwareController = hardwareController
+
         self.audio_device_index = audio_device_index
         self.shutdown_event: Event
         self._picovoice = Picovoice(
@@ -73,13 +77,13 @@ class Microphone:
         for i in range(len(devices)):
             print('index: %d, device name: %s' % (i, devices[i]))
 
-    @staticmethod
-    def _wake_word_callback():
+    # @staticmethod
+    def _wake_word_callback(self):
         print('[wake word]\n')
-        # toggle light?
+        # toggle light to show wake word detected?
 
-    @staticmethod
-    def _inference_callback(inference: pvrhino.Rhino.Inference):
+    # @staticmethod
+    def _inference_callback(self, inference: pvrhino.Rhino.Inference):
         
         if inference.is_understood:
             print('{')
@@ -93,6 +97,11 @@ class Microphone:
             if inference.intent == 'changeLightState':
                 if inference.slots['state'] == 'off':
                     print("turning light off")
+                    self.hardwareController.turnLightOnOff(off=True)
+                if inference.slots['state'] == 'on':
+                    print("turning light on")
+                    self.hardwareController.turnLightOnOff(on=True)
+                    
         else:
             print("Didn't understand the command.\n")
 

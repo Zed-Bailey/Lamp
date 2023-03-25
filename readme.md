@@ -16,3 +16,4 @@ default rhino context files can be found here: https://github.com/Picovoice/rhin
 - picovoice
 - pvrecorder
 - python-dotenv
+- gpiozero

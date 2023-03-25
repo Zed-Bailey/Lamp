@@ -1,6 +1,7 @@
 
 from web_cam import WebCam
 from microphone import Microphone
+from hardware_control import HardwareController
 import threading
 from dotenv import load_dotenv
 import os
@@ -14,10 +15,12 @@ load_dotenv()
 
 shutdown_event = threading.Event()
 
+hardwareController = HardwareController()
+
 accessKey = os.getenv("PICO_CONSOLE_KEY")
 rhino = os.getenv("RHINO_CONTEXT_FILE")
+# porcupine = os.getenv("PORCUPINE_KEYWORD_FILE")
 porcupine = pvporcupine.KEYWORD_PATHS['blueberry']
-debug = True
 
 print(porcupine)
 
@@ -25,8 +28,8 @@ mic_thread = Microphone(
     accessKey,
     porcupine,
     rhino,
+    hardwareController
 )
-
 mic_thread.show_audio_devices()
 
 # cam_thread = WebCam()
@@ -37,7 +40,7 @@ mic_thread.start(shutdown_event)
 
 # shutdown_event.wait()
 
-input("press enter to shutdown threads")
+input("press enter to shutdown threads\n")
 
 shutdown_event.set()
 
