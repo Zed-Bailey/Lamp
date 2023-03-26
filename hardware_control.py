@@ -34,6 +34,10 @@ class HardwareController:
         
     """
 
+    def cleanup(self):
+        # self.led.close()
+        pass
+
     def toggleLightOpenClose(self):
         self.lock.acquire()
         try:

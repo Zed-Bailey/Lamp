@@ -28,7 +28,11 @@ mic_thread = Microphone(
     accessKey,
     porcupine,
     rhino,
-    hardwareController
+    hardwareController,
+    # may be required for raspberry pi
+    # -1 uses default microphone
+    # audio_device_index=1,
+    # audio_device_index=-1
 )
 mic_thread.show_audio_devices()
 
@@ -47,6 +51,8 @@ shutdown_event.set()
 
 # cam_thread.join()
 mic_thread.join()
+
+hardwareController.cleanup()
 
 print("done")
 

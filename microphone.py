@@ -38,6 +38,7 @@ class Microphone:
         )
 
 
+
     def capture(self, event: Event):
         """
         """
@@ -45,7 +46,8 @@ class Microphone:
         recorder = None
         
         try:
-            recorder = PvRecorder(device_index=self.audio_device_index, frame_length=self._picovoice.frame_length)
+            # frame_length=self._picovoice.frame_length
+            recorder = PvRecorder(device_index=self.audio_device_index, frame_length=512)
             recorder.start()
 
             print("Using device: %s" % recorder.selected_device)
